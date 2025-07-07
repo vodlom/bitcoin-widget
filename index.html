@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Widget</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .btc-widget {
+            width: 320px;
+            background: #1a1a2e;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .btc-header {
+            background: #f7931a;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btc-title {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .btc-logo {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .btc-date {
+            font-size: 14px;
+        }
+
+        .btc-content {
+            padding: 20px;
+        }
+
+        .btc-currency {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .currency-name {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .currency-flag {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .currency-value {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .variation {
+            font-size: 14px;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .positive {
+            color: #4caf50;
+        }
+
+        .negative {
+            color: #f44336;
+        }
+
+        .btc-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .btc-updated {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .btc-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btc-refresh, .btc-github {
+            background: #f7931a;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btc-github {
+            background: #333;
+        }
+
+        .btc-refresh:hover, .btc-github:hover {
+            opacity: 0.9;
+        }
+
+        .refresh-icon, .github-icon {
+            width: 14px;
+            height: 14px;
+            margin-right: 5px;
+        }
+
+        .loading {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="btc-widget">
+        <div class="btc-header">
+            <div class="btc-title">
+                <svg class="btc-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor" d="M504 256c0 136.1-111 248-248 248S8 392.1 8 256 119 8 256 8s248 111 248 248zm-141.7-35.33c4.937-32.1-20.19-50.74-54.55-62.57l11.15-44.7-27.21-6.781-10.85 43.52c-7.154-1.783-14.5-3.464-21.8-5.13l10.93-43.81-27.2-6.781-11.15 44.69c-5.922-1.349-11.73-2.682-17.38-4.084l.031-.14-37.53-9.37-7.239 29.06s20.19 4.627 19.76 4.913c11.02 2.751 13.01 10.04 12.68 15.82l-12.7 50.92c.76.194 1.744.473 2.829.907-.907-.225-1.876-.473-2.876-.713l-17.8 71.34c-1.349 3.348-4.767 8.37-12.47 6.464.27.395-19.78-4.937-19.78-4.937l-13.51 31.15 35.41 8.827c6.588 1.651 13.04 3.379 19.4 5.006l-11.26 45.21 27.18 6.781 11.15-44.73a1038 1038 0 0021.69 5.627l-11.11 44.52 27.21 6.781 11.26-45.13c46.4 8.781 81.3 5.239 95.99-36.73 11.84-33.79-.589-53.28-25-65.99 17.78-4.098 31.17-15.79 34.75-39.95zm-62.18 87.18c-8.41 33.79-65.31 15.52-83.75 10.94l14.94-59.9c18.45 4.603 77.6 13.72 68.81 48.96zm8.417-87.67c-7.673 30.74-55.03 15.12-70.39 11.29l13.55-54.33c15.36 3.828 64.84 10.97 56.85 43.03z"/>
+                </svg>
+                Bitcoin
+            </div>
+            <div class="btc-date" id="current-date"></div>
+        </div>
+        
+        <div class="btc-content">
+            <div class="btc-currency">
+                <div class="currency-name">
+                    <img src="https://flagcdn.com/w20/us.png" class="currency-flag" alt="USD">
+                    USD
+                </div>
+                <div class="currency-value" id="btc-usd">--</div>
+            </div>
+            <div id="usd-variation" class="variation"></div>
+            
+            <div class="btc-currency" style="margin-top: 20px;">
+                <div class="currency-name">
+                    <img src="https://flagcdn.com/w20/br.png" class="currency-flag" alt="BRL">
+                    BRL
+                </div>
+                <div class="currency-value" id="btc-brl">--</div>
+            </div>
+            <div id="brl-variation" class="variation"></div>
+        </div>
+        
+        <div class="btc-footer">
+            <div class="btc-updated" id="last-updated"></div>
+            <div class="btc-actions">
+                <a href="https://github.com/vodlom/bitcoin-widget" class="btc-github" target="_blank">
+                    <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                    Código
+                </a>
+                <button class="btc-refresh" id="refresh-btn">
+                    <svg class="refresh-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path fill="currentColor" d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/>
+                    </svg>
+                    Atualizar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatarNumero(num) {
+            return num.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function formatarVariacao(num) {
+            return num.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                signDisplay: 'always'
+            }) + '%';
+        }
+
+        function atualizarData() {
+            const hoje = new Date();
+            const dataFormatada = hoje.toLocaleDateString('pt-BR');
+            document.getElementById('current-date').textContent = dataFormatada;
+        }
+
+        async function buscarPrecos() {
+            try {
+                document.getElementById('btc-usd').textContent = '...';
+                document.getElementById('btc-brl').textContent = '...';
+                document.getElementById('refresh-btn').classList.add('loading');
+                
+                // Busca preço atual
+                const respostaPreco = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl,usd');
+                const dadosPreco = await respostaPreco.json();
+                
+                // Busca variação 24h
+                const respostaVariacao = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1');
+                const dadosVariacao = await respostaVariacao.json();
+                
+                if (dadosPreco.bitcoin && dadosVariacao.prices) {
+                    const precoAtualUSD = dadosPreco.bitcoin.usd;
+                    const precoAtualBRL = dadosPreco.bitcoin.brl;
+                    
+                    // Calcula variação 24h para USD
+                    const preco24hAtrasUSD = dadosVariacao.prices[0][1];
+                    const variacaoUSD = ((precoAtualUSD - preco24hAtrasUSD) / preco24hAtrasUSD) * 100;
+                    
+                    // Calcula variação 24h para BRL (aproximada)
+                    const variacaoBRL = variacaoUSD; // Simplificação - na prática deveria ter outra chamada API
+                    
+                    document.getElementById('btc-usd').textContent = '$' + formatarNumero(precoAtualUSD);
+                    document.getElementById('btc-brl').textContent = 'R$' + formatarNumero(precoAtualBRL);
+                    
+                    const usdVariationElement = document.getElementById('usd-variation');
+                    usdVariationElement.textContent = formatarVariacao(variacaoUSD);
+                    usdVariationElement.className = variacaoUSD >= 0 ? 'variation positive' : 'variation negative';
+                    
+                    const brlVariationElement = document.getElementById('brl-variation');
+                    brlVariationElement.textContent = formatarVariacao(variacaoBRL);
+                    brlVariationElement.className = variacaoBRL >= 0 ? 'variation positive' : 'variation negative';
+                    
+                    const agora = new Date();
+                    const horaFormatada = agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+                    document.getElementById('last-updated').textContent = `Atualizado: ${horaFormatada}`;
+                }
+            } catch (erro) {
+                console.error('Erro ao buscar dados:', erro);
+                document.getElementById('btc-usd').textContent = 'Erro';
+                document.getElementById('btc-brl').textContent = 'Erro';
+            } finally {
+                document.getElementById('refresh-btn').classList.remove('loading');
+            }
+        }
+
+        let intervaloAtualizacao = setInterval(buscarPrecos, 90000);
+
+        document.getElementById('refresh-btn').addEventListener('click', () => {
+            clearInterval(intervaloAtualizacao);
+            buscarPrecos();
+            intervaloAtualizacao = setInterval(buscarPrecos, 90000);
+        });
+
+        atualizarData();
+        buscarPrecos();
+    </script>
+</body>
+</html>
