@@ -14,9 +14,9 @@ It fetches real-time BTC prices in USD and BRL using the CoinGecko API and displ
 - Built without frameworks or dependencies  
 - Can be embedded in other websites via `<iframe>`
 
-## Preview
+## Demo
 
-![Bitcoin Widget Screenshot](https://raw.githubusercontent.com/vodlom/bitcoin-widget/refs/heads/main/preview.png)
+See it in action: [https://vodlom.github.io/bitcoin-widget/](https://vodlom.github.io/bitcoin-widget/)
 
 ## Usage
 
